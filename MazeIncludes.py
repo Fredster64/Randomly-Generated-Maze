@@ -13,17 +13,17 @@ sqSize = 30
 s = int(sqSize)
 
 #player images
-catUpImg = pygame.image.load('Sprites/cat_up.png')
-catDownImg = pygame.image.load('Sprites/cat_down.png')
-catLeftImg = pygame.image.load('Sprites/cat_left.png')
-catRightImg = pygame.image.load('Sprites/cat_right.png')
+catUpImg = pygame.image.load('cat_up.png')
+catDownImg = pygame.image.load('cat_down.png')
+catLeftImg = pygame.image.load('cat_left.png')
+catRightImg = pygame.image.load('cat_right.png')
 catSpriteDict = {"up":catUpImg, "down":catDownImg, "left":catLeftImg, "right":catRightImg}
 
 #dog images
-dogUpImg = pygame.image.load('Sprites/dog_up.png')
-dogDownImg = pygame.image.load('Sprites/dog_down.png')
-dogLeftImg = pygame.image.load('Sprites/dog_left.png')
-dogRightImg = pygame.image.load('Sprites/dog_right.png')
+dogUpImg = pygame.image.load('dog_up.png')
+dogDownImg = pygame.image.load('dog_down.png')
+dogLeftImg = pygame.image.load('dog_left.png')
+dogRightImg = pygame.image.load('dog_right.png')
 dogSpriteDict = {"up":dogUpImg, "down":dogDownImg, "left":dogLeftImg, "right":dogRightImg}
 
 #texts for end game
