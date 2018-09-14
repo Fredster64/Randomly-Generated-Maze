@@ -40,74 +40,80 @@ class GameEngine:
     self.maze = cm.makeTree(gC,l-1,w-1,s)
     
     #Drawing maze 
-    self.posChar = v(s/2,s/2)
-    self.posOpponent = v(s*l - s/2, s/2)
+    posChar = v(s/2,s/2)
+    posOpponent = v(s*l - s/2, s/2)
     dm.drawMaze(l,w,maze,gC,s,gameDisplay,surface)
     print("Loaded.\nYour aim is to reach the green square without getting caught by the enemy.\nGood Luck!")
-    self.moveCount = 0
-    self.player = char(playerSpriteDict,posChar)
+    self.player = char(playerSpriteDict, posChar)
     self.opponent = char(opponentSpriteDict, posOpponent)
-    self.playerDirection = None
-    self.opponentDirection = None
-    self.opponentMoveCount = 1
     
     #drawing player
-    gameDisplay.blit(player.spriteDict["down"],(posChar[0]-(s/2)+5,posChar[1]-(s/2)+5))
+    self.gameDisplay.blit(player.currentSprite,(self.player.pos[0]-(s/2)+5,self.player.pos[1]-(s/2)+5))
     pygame.display.update()
-    self.playerSprite = player.spriteDict["down"]
 
     #drawing opponent
-    gameDisplay.blit(opponent.spriteDict["down"],(posOpponent[0]-(s/2)+5,posOpponent[1]-(s/2)+5))
+    self.gameDisplay.blit(opponent.currentSprite,(self.opponent.pos[0]-(s/2)+5,self.opponent.pos[1]-(s/2)+5))
     pygame.display.update()
-    self.opponentSprite = opponent.spriteDict["down"]
     
-    def gameLoop(self): # The main game loop 
-      
-      opponentMoveCount = 0 #Used to control how often opponent moves
-      
-      while True:
+###-----------------------------------###
+
+  #check whether the game has ended
+  #also ends the game if it has
+  def endCheck(self, moveCount): 
     
-        #moving player
-        self.playerDirection = getDirection()
-        if self.playerDirection != None:
-            self.playerSprite = player.spriteDict[playerDirection]
-        if moveTest(self.posChar,self.playerDirection,self.maze) == True:
-            self.posChar = moveOnce(self.player,maze,self.playerDirection,dirDict)
-            self.moveCount += 1
-        blackAround(self.posChar,self.surface, s)
+    #collision with opponent
+      if self.player.pos == self.opponent.pos:
+          endGame(collisionText, moveCount)
 
-        #moving opponent
-        if self.moveCount != 0:
-            self.opponentDirection = getOpponentDirection(self.posChar, self.posOpponent, opponentMoveCount % 450)
-            while moveTest(self.posOpponent, self.opponentDirection, self.maze) == False and self.opponentDirection != None:
-                self.opponentDirection = getOpponentDirection(self.posChar, self.posOpponent, self.opponentMoveCount % 450)
+      #getting to the green square
+      if self.player.pos == v(s*(l-1)+(s/2),s*(w-1)+(s/2)):
+          endGame(winText, moveCount)
+          
+      return
+    
+###-----------------------------------###
+    
+  def gameLoop(self): # The main game loop 
 
-            if self.opponentDirection != None:
-                self.posOpponent = moveOnce(self.opponent, self.maze, self.opponentDirection, dirDict)
+    opponentMoveCount = 1 #Used to control how often opponent moves
+    moveCount = 0 #How many moves the player has made
 
-        else:
-            self.opponentDirection = None
+    while True:
 
-        blackAround(self.posOpponent, self.surface, s)
-        opponentMoveCount += 1
-        
-        #the green square (at end)
-        pygame.draw.rect(self.surface,(0,200,0,1),((s*(l-0.75),s*(w-0.75)),(s/2,s/2)),0)
+      #moving player
+      self.player.currentDirection = getDirection()
+      if self.player.currentDirection != None:
+          changeSprite(self.player) #Changes sprite regardless of whether move is valid 
+      if moveTest(self.posChar,self.playerDirection,self.maze):
+          moveOnce(self.player, maze)
+          moveCount += 1
+      blackAround(self.player.pos, self.surface, s)
 
-        #the player
-        gameDisplay.blit(self.playerSprite,(int(self.posChar[0]-(s/2)+5),int(self.posChar[1]-(s/2)+5)))
+      #moving opponent
+      if moveCount != 0:
+          self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
+          while !moveTest(self.posOpponent, self.opponentDirection, self.maze) and self.opponentDirection != None:
+              self.opponent.pos = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
 
-        #the opponent
-        gameDisplay.blit(self.opponentSprite,(int(self.posOpponent[0]-(s/2)+5),int(self.posOpponent[1]-(s/2)+5)))
-        pygame.display.flip()
+          if self.opponent.currentDirection != None:
+              moveOnce(self.opponent, self.maze)
 
-        #collision with opponent
-        if self.posChar == self.posOpponent:
-            endGame(collisionText, self.moveCount)
-            return
+      else:
+          self.opponent.currentDirection = None
 
-        #getting to the green square
-        if self.posChar == v(s*(l-1)+(s/2),s*(w-1)+(s/2)):
-            endGame(winText, self.moveCount)
-            return
+      blackAround(self.opponent.pos, self.surface, s)
+      opponentMoveCount += 1
+
+      #drawing the green target square
+      pygame.draw.rect(self.surface,(0,200,0,1),((s*(l-0.75),s*(w-0.75)),(s/2,s/2)),0)
+
+      #the player
+      drawChar(self.player, self.gameDisplay, s)
+
+      #the opponent
+      drawChar(self.player, self.gameDisplay, s)
       
+      pygame.display.flip() #update display
+      
+      endCheck(self, moveCount)
+
