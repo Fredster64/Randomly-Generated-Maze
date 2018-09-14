@@ -29,20 +29,20 @@ class GameEngine:
         opponentSpriteDict = catSpriteDict
     
     pygame.display.init
-    self.gameDisplay = pygame.display.set_mode([s*l,s*w])
+    self.gameDisplay = pygame.display.set_mode([s*self.l, s*self.w])
     pygame.display.set_caption("Maze")
     self.surface = pygame.display.get_surface()
     
     print("Loading...")
     
     #making maze
-    self.gC = cm.graphComplete(l-1,w-1,s)
-    self.maze = cm.makeTree(gC,l-1,w-1,s)
+    self.gC = cm.graphComplete(self.l-1, self.w-1, s)
+    self.maze = cm.makeTree(self.gC, self.l-1, self.w-1, s)
     
     #Drawing maze 
     posChar = v(s/2,s/2)
-    posOpponent = v(s*l - s/2, s/2)
-    dm.drawMaze(l,w,maze,gC,s,gameDisplay,surface)
+    posOpponent = v(s*self.l - s/2, s/2)
+    dm.drawMaze(self.l, self.w, self.maze, self.gC, s, self.gameDisplay, self.surface)
     print("Loaded.\nYour aim is to reach the green square without getting caught by the enemy.\nGood Luck!")
     self.player = char(playerSpriteDict, posChar)
     self.opponent = char(opponentSpriteDict, posOpponent)
