@@ -82,7 +82,7 @@ def changeSprite(self):
     return
 
 #Returns new location, and sets new sprite
-def moveOnce(self, maze):
+def moveOnce(self, maze, dirDict):
     changePos(self,self.pos+dirDict[self.currentDirection])
     return
 
