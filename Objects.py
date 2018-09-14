@@ -59,7 +59,7 @@ def rectAroundList(self, s):
     return rectList
 
 #draws black around the position
-def blackAround(self,surface, s):
+def blackAround(self, surface, s):
     for rect in rectAroundList(self, s):
         pygame.draw.rect(surface,(0,0,0,1),rect)
 
@@ -70,14 +70,25 @@ class char:
     def __init__(self,spriteDict,pos):
         self.spriteDict = spriteDict
         self.pos = pos
+        self.currentSprite = spriteDict["down"]
+        self.currentDirection = None
 
 def changePos(self,posNew):
     self.pos = posNew
     return self.pos
 
-def moveOnce(self,maze,direction,dirDict):
-    position = changePos(self,self.pos+dirDict[direction])
-    return position
+def changeSprite(self): 
+    self.currentSprite = self.spriteDict[self.currentDirection]
+    return
+
+#Returns new location, and sets new sprite
+def moveOnce(self, maze):
+    changePos(self,self.pos+dirDict[self.currentDirection])
+    return
+
+def drawChar(self, gameDisplay, s): 
+    gameDisplay.blit(self.currentSprite, (int(self.pos[0]-(s/2)+5), int(self.pos[1]-(s/2)+5)))
+    return
 
 #------------------------------------------------------------#
 
