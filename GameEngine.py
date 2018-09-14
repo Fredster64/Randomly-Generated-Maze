@@ -92,7 +92,7 @@ class GameEngine:
       #moving opponent
       if moveCount != 0:
           self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
-          while !moveTest(self.posOpponent, self.opponentDirection, self.maze) and self.opponentDirection != None:
+          while !moveTest(self.opponent.pos, self.opponent.currentDirection, self.maze) and self.opponent.currentDirection != None:
               self.opponent.pos = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
 
           if self.opponent.currentDirection != None:
