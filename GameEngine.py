@@ -48,11 +48,11 @@ class GameEngine:
     self.opponent = char(opponentSpriteDict, posOpponent)
     
     #drawing player
-    self.gameDisplay.blit(player.currentSprite,(self.player.pos[0]-(s/2)+5,self.player.pos[1]-(s/2)+5))
+    drawChar(self.player, self.gameDisplay, s)
     pygame.display.update()
 
     #drawing opponent
-    self.gameDisplay.blit(opponent.currentSprite,(self.opponent.pos[0]-(s/2)+5,self.opponent.pos[1]-(s/2)+5))
+    drawChar(self.opponent, self.gameDisplay, s)
     pygame.display.update()
     
 ###-----------------------------------###
@@ -66,7 +66,7 @@ class GameEngine:
           endGame(collisionText, moveCount)
 
       #getting to the green square
-      if self.player.pos == v(s*(l-1)+(s/2),s*(w-1)+(s/2)):
+      if self.player.pos == v(s*(self.l-1)+(s/2), s*(self.w-1)+(s/2)):
           endGame(winText, moveCount)
           
       return
@@ -84,8 +84,8 @@ class GameEngine:
       self.player.currentDirection = getDirection()
       if self.player.currentDirection != None:
           changeSprite(self.player) #Changes sprite regardless of whether move is valid 
-      if moveTest(self.posChar,self.playerDirection,self.maze):
-          moveOnce(self.player, maze)
+      if moveTest(self.player.pos, self.player.currentDirection, self.maze):
+          moveOnce(self.player, self.maze, dirDict)
           moveCount += 1
       blackAround(self.player.pos, self.surface, s)
 
@@ -93,10 +93,10 @@ class GameEngine:
       if moveCount != 0:
           self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
           while (not moveTest(self.opponent.pos, self.opponent.currentDirection, self.maze) ) and ( self.opponent.currentDirection != None):
-              self.opponent.pos = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
+              self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
 
           if self.opponent.currentDirection != None:
-              moveOnce(self.opponent, self.maze)
+              moveOnce(self.opponent, self.maze, dirDict)
 
       else:
           self.opponent.currentDirection = None
@@ -105,13 +105,13 @@ class GameEngine:
       opponentMoveCount += 1
 
       #drawing the green target square
-      pygame.draw.rect(self.surface,(0,200,0,1),((s*(l-0.75),s*(w-0.75)),(s/2,s/2)),0)
+      pygame.draw.rect(self.surface, (0,200,0,1), ((s*(self.l-0.75), s*(self.w-0.75)), (s/2,s/2)), 0)
 
       #the player
       drawChar(self.player, self.gameDisplay, s)
 
       #the opponent
-      drawChar(self.player, self.gameDisplay, s)
+      drawChar(self.opponent, self.gameDisplay, s)
       
       pygame.display.flip() #update display
       
