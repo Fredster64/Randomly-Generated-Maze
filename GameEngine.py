@@ -63,6 +63,8 @@ class GameEngine:
     
     def gameLoop(self): # The main game loop 
       
+      opponentMoveCount = 0 #Used to control how often opponent moves
+      
       while True:
     
         #moving player
@@ -76,7 +78,7 @@ class GameEngine:
 
         #moving opponent
         if self.moveCount != 0:
-            self.opponentDirection = getOpponentDirection(self.posChar, self.posOpponent, self.opponentMoveCount % 450)
+            self.opponentDirection = getOpponentDirection(self.posChar, self.posOpponent, opponentMoveCount % 450)
             while moveTest(self.posOpponent, self.opponentDirection, self.maze) == False and self.opponentDirection != None:
                 self.opponentDirection = getOpponentDirection(self.posChar, self.posOpponent, self.opponentMoveCount % 450)
 
@@ -87,7 +89,7 @@ class GameEngine:
             self.opponentDirection = None
 
         blackAround(self.posOpponent, self.surface, s)
-        self.opponentMoveCount += 1
+        opponentMoveCount += 1
         
         #the green square (at end)
         pygame.draw.rect(self.surface,(0,200,0,1),((s*(l-0.75),s*(w-0.75)),(s/2,s/2)),0)
