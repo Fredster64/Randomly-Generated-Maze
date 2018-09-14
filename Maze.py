@@ -14,10 +14,9 @@ from random import randint
 import pygame
 import math
 
-#The game loop
-def gameLoop():
-    
-    #setting up
+#Setting up 
+#Returns length and width for future use
+def setup():
     print("Welcome to the maze!")
     print("You start in the top-left corner and can move left, right, up or down.")
     print("Please choose how long and wide you want the maze to be.")
@@ -43,7 +42,10 @@ def gameLoop():
     gC = cm.graphComplete(l-1,w-1,s)
     maze = cm.makeTree(gC,l-1,w-1,s)
     
-    #drawing maze
+    return [l, w]
+
+#Draws the maze and starts the game
+def drawMaze(l, w):
     posChar = v(s/2,s/2)
     posOpponent = v(s*l - s/2, s/2)
     dm.drawMaze(l,w,maze,gC,s,gameDisplay,surface)
@@ -65,7 +67,20 @@ def gameLoop():
     pygame.display.update()
     opponentSprite = opponent.spriteDict["down"]
     
-    #moving around
+    return [moveCount, player, opponent, playerDirection, opponentDirection, opponentMoveCount]
+
+#The game loop
+def gameLoop():
+    
+    #Start game and create maze
+    #Also gets l and w
+    [l, w] = setup()
+    
+    #Draw the maze 
+    #Also returns data required for the game loop itself 
+    [moveCount, player, opponent, playerDirection, opponentDirection, opponentMoveCount] = drawMaze(l, w)
+    
+    #main game loop
     while True:
 
         #moving player
