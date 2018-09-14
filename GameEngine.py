@@ -59,61 +59,64 @@ class GameEngine:
 
   #check whether the game has ended
   #also ends the game if it has
-  def endCheck(self, moveCount): 
-    
-    #collision with opponent
-      if self.player.pos == self.opponent.pos:
-          endGame(collisionText, moveCount)
+def endCheck(self, moveCount): 
 
-      #getting to the green square
-      if self.player.pos == v(s*(self.l-1)+(s/2), s*(self.w-1)+(s/2)):
-          endGame(winText, moveCount)
-          
-      return
+  #collision with opponent
+    if self.player.pos == self.opponent.pos:
+        endGame(collisionText, moveCount)
+        return True
+
+    #getting to the green square
+    if self.player.pos == v(s*(self.l-1)+(s/2), s*(self.w-1)+(s/2)):
+        endGame(winText, moveCount)
+        return True
+
+    return False
     
 ###-----------------------------------###
     
-  def gameLoop(self): # The main game loop 
+def gameLoop(self): # The main game loop 
 
-    opponentMoveCount = 1 #Used to control how often opponent moves
-    moveCount = 0 #How many moves the player has made
+  opponentMoveCount = 1 #Used to control how often opponent moves
+  moveCount = 0 #How many moves the player has made
 
-    while True:
+  while True:
 
-      #moving player
-      self.player.currentDirection = getDirection()
-      if self.player.currentDirection != None:
-          changeSprite(self.player) #Changes sprite regardless of whether move is valid 
-      if moveTest(self.player.pos, self.player.currentDirection, self.maze):
-          moveOnce(self.player, self.maze, dirDict)
-          moveCount += 1
-      blackAround(self.player.pos, self.surface, s)
+    #moving player
+    self.player.currentDirection = getDirection()
+    if self.player.currentDirection != None:
+        changeSprite(self.player) #Changes sprite regardless of whether move is valid 
+    if moveTest(self.player.pos, self.player.currentDirection, self.maze):
+        moveOnce(self.player, self.maze, dirDict)
+        moveCount += 1
+    blackAround(self.player.pos, self.surface, s)
 
-      #moving opponent
-      if moveCount != 0:
-          self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
-          while (not moveTest(self.opponent.pos, self.opponent.currentDirection, self.maze) ) and ( self.opponent.currentDirection != None):
-              self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
+    #moving opponent
+    if moveCount != 0:
+        self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
+        while (not moveTest(self.opponent.pos, self.opponent.currentDirection, self.maze) ) and ( self.opponent.currentDirection != None):
+            self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
 
-          if self.opponent.currentDirection != None:
-              moveOnce(self.opponent, self.maze, dirDict)
+        if self.opponent.currentDirection != None:
+            moveOnce(self.opponent, self.maze, dirDict)
 
-      else:
-          self.opponent.currentDirection = None
+    else:
+        self.opponent.currentDirection = None
 
-      blackAround(self.opponent.pos, self.surface, s)
-      opponentMoveCount += 1
+    blackAround(self.opponent.pos, self.surface, s)
+    opponentMoveCount += 1
 
-      #drawing the green target square
-      pygame.draw.rect(self.surface, (0,200,0,1), ((s*(self.l-0.75), s*(self.w-0.75)), (s/2,s/2)), 0)
+    #drawing the green target square
+    pygame.draw.rect(self.surface, (0,200,0,1), ((s*(self.l-0.75), s*(self.w-0.75)), (s/2,s/2)), 0)
 
-      #the player
-      drawChar(self.player, self.gameDisplay, s)
+    #the player
+    drawChar(self.player, self.gameDisplay, s)
 
-      #the opponent
-      drawChar(self.opponent, self.gameDisplay, s)
-      
-      pygame.display.flip() #update display
-      
-      endCheck(self, moveCount)
+    #the opponent
+    drawChar(self.opponent, self.gameDisplay, s)
+
+    pygame.display.flip() #update display
+
+    if endCheck(self, moveCount): 
+      return
 
