@@ -29,9 +29,9 @@ class GameEngine:
         opponentSpriteDict = catSpriteDict
     
     pygame.display.init
-    gameDisplay = pygame.display.set_mode([s*l,s*w])
+    self.gameDisplay = pygame.display.set_mode([s*l,s*w])
     pygame.display.set_caption("Maze")
-    surface = pygame.display.get_surface()
+    self.surface = pygame.display.get_surface()
     
     print("Loading...")
     
@@ -61,7 +61,7 @@ class GameEngine:
     pygame.display.update()
     self.opponentSprite = opponent.spriteDict["down"]
     
-    def gameLoop(self, surface): # The main game loop 
+    def gameLoop(self): # The main game loop 
       
       while True:
     
@@ -72,7 +72,7 @@ class GameEngine:
         if moveTest(self.posChar,self.playerDirection,self.maze) == True:
             self.posChar = moveOnce(self.player,maze,self.playerDirection,dirDict)
             self.moveCount += 1
-        blackAround(self.posChar,surface, s)
+        blackAround(self.posChar,self.surface, s)
 
         #moving opponent
         if self.moveCount != 0:
@@ -86,11 +86,11 @@ class GameEngine:
         else:
             self.opponentDirection = None
 
-        blackAround(self.posOpponent, surface, s)
+        blackAround(self.posOpponent, self.surface, s)
         self.opponentMoveCount += 1
         
         #the green square (at end)
-        pygame.draw.rect(surface,(0,200,0,1),((s*(l-0.75),s*(w-0.75)),(s/2,s/2)),0)
+        pygame.draw.rect(self.surface,(0,200,0,1),((s*(l-0.75),s*(w-0.75)),(s/2,s/2)),0)
 
         #the player
         gameDisplay.blit(self.playerSprite,(int(self.posChar[0]-(s/2)+5),int(self.posChar[1]-(s/2)+5)))
