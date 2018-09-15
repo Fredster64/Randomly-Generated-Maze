@@ -38,6 +38,28 @@ dirDict = {"left":v(-s,0),"right":v(s,0),"up":v(0,-s),"down":v(0,s)}
 
 ### Non-member functions ###
 
+#dijkstra's algorithm
+def checkVertex( vertex, graph, checkedVertices ):
+    """
+    We'll check a single vertex in this function. 
+    With each vertex, we will store the vertex from which you can get to it minimally: 
+    - e.g. if the path took us from vertex A to vertex B, we would store vertex A in B. 
+    It will return a graph with updated weights. 
+    """
+
+def getNextMove( posFrom, posTo, graph ):
+    """
+    We use Dijkstra's algorithm to get the shortest path.
+    
+    Each vertex of graph is given a weight (each edge weight is 1).
+    The weights start at 0 by default.
+    We start at the start vertex and give vertices adjacent to it weight +1. 
+    Then, we repeat for the not-checked adjacent vertex of least weight.
+    
+    We'll implement this recursively, using checkVertex.
+    We will return the vertex to move to next, on the shortest path. 
+    """
+
 #register key input
 def getDirection():
     for event in pygame.event.get():
