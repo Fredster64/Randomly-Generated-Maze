@@ -1,6 +1,6 @@
 Randomly-Generated Maze Project in Python 
 
-The maze uses Prim's Algorithm for maze generation, finding a minimum spanning tree of the square lattice on which the maze is set. It features two playable characters and some (very rudimentary) AI for the opposing player. 
+The maze uses Prim's Algorithm for maze generation, finding a minimum spanning tree of the square lattice on which the maze is set. It features two playable characters and some AI (currently undergoing improvement) for the opposing player. 
 
 This project has improved my skills with: 
 
