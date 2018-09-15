@@ -9,6 +9,7 @@ class v:
     def __init__(self,x,y):
         self.x = x
         self.y = y
+        self.weight = 0 #Used for path-finding
         
     def __getitem__(self,index):
         if index == 0:
@@ -62,6 +63,9 @@ def rectAroundList(self, s):
 def blackAround(self, surface, s):
     for rect in rectAroundList(self, s):
         pygame.draw.rect(surface,(0,0,0,1),rect)
+        
+def setWeight(self, value):
+    self.weight = value
 
 #------------------------------------------------------------#
         
