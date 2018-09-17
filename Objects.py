@@ -6,10 +6,15 @@ import pygame
 
 #create a vertex object
 class v:
-    def __init__(self,x,y):
+    def __init__(self,x,y,s):
         self.x = x
         self.y = y
         self.weight = 0 #used in Dijkstra's algorithm
+        # Store the vertex reference coordinates
+        # i.e. vertex points to maze square in ith row and jth column
+        self.i = (x - s/2) / s
+        self.j = (y - s/2) / s
+        
         
     def __getitem__(self,index):
         if index == 0:
@@ -167,11 +172,11 @@ def addEdge(self, vertex1Ref, vertex2Ref):
 def convertRefToCoords(self, vertexRef, s): 
     # Get 'i' and 'j' from ref 
     # Note: i and j start counting at 1, NOT 0
-    i = edgeRef % self.height  #row number
+    i = vertexRef % self.height  #row number
     if i == 0: 
         i = n
         
-    j = ( (edgeRef - i) / self.breadth ) + 1  #column number
+    j = ( (vertexRef - i) / self.breadth ) + 1  #column number
     
     # Get coordinates on-screen from i and j
     # +s/2 is needed to land us in the middle of a square
