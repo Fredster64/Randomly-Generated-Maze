@@ -126,4 +126,76 @@ def vertexEq(self,other):
         return True
     else:
         return False
+    
+###-------------------------------------------------###
+# Create an undirected graph object 
+# Undirection makes it easier to keep track of edges 
+class undirectedGraph: 
+    
+    def __init__(self, breath, height): 
+        self.edges = []
+        # We input breadth and height of the square grid 
+        self.breadth = breadth
+        self.height = height
+        self.size = self.breadth*self.height
+        # Note: for an n*m grid, we need (n+1)(m+1) vertices
+        self.adjacencyMatrix = [][]
+        for i in range( self.size ):
+            for j in range( self.size ): 
+                adjacencyMatrix[i][j] = 0 # adjacencyMatrix is a size*size matrix of zeroes 
+                
+        return
+                
+# add an edge to the graph between vertex1 and vertex2
+def addEdge(self, vertex1Ref, vertex2Ref):
+    # vertex reference data will be of integer form
+    # for an n*m grid of squares, the vertices will be indexed:
+    """
+    1   | n+1   | 2n+1  | 3n+1  | ... | (m-1)n + 1
+    2   | n+2   | 2n+2  | .........   | (m-1)n + 2
+           ...................
+    n   | 2n    | .............       | mn
+    """
+    
+    self.adjacencyMatrix[vertex1Ref][vertex2Ref] = 1
+    self.adjacencyMatrix[vertex2Ref][vertex1Ref] = 1
+    
+    return
+
+# convert between vertex position in adjacency matrix and on-screen coordinates
+# 's' will be a global variable (see MazeIncludes.py)
+def convertRefToCoords(self, vertexRef, s): 
+    # Get 'i' and 'j' from ref 
+    # Note: i and j start counting at 1, NOT 0
+    i = edgeRef % self.height  #row number
+    if i == 0: 
+        i = n
+        
+    j = ( (edgeRef - i) / self.breadth ) + 1  #column number
+    
+    # Get coordinates on-screen from i and j
+    # +s/2 is needed to land us in the middle of a square
+    x = s*i + s/2
+    y = s*j + s/2
+    
+    return [x, y]
+
+# completes the graph
+def complete(self): 
+    for i in range(self.size): 
+        for j in range(self.size): 
+            self.adjacencyMatrix[i][j] = 1
+            
+    return
+
+# returns the complement of a graph
+def getComplement(self): 
+    complement = undirectedGraph(self.breadth, self.height)
+    for i in range(self.size):
+        for j in range(self.size): 
+            complement.adjacencyMatrix[i][j] = 1 - self.adjacencyMatrix[i][j]
+            
+    return complement
+            
+###-----------------------------------------------------------------###
  
