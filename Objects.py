@@ -151,8 +151,8 @@ class undirectedGraph:
                 
         return
                 
-# add an edge to the graph between vertex1 and vertex2
-def addEdge(self, vertex1, vertex2):
+# add an edge to the graph
+def addEdge(self, edge):
     # vertex reference data will be of integer form
     # for an n*m grid of squares, the vertices will be indexed:
     """
@@ -162,7 +162,10 @@ def addEdge(self, vertex1, vertex2):
     n   | 2n    | .............       | mn
     """
     
-    # Get vertex references from vertex.i and vertex.j
+    vertex1 = edge.v1
+    vertex2 = edge.v2
+    
+    # Get vertex references from vertex{k}.i and vertex{k}.j
     vertex1Ref = (vertex1.j - 1)*self.height + vertex1.i
     vertex2Ref = (vertex2.j - 1)*self.height + vertex2.i
     
