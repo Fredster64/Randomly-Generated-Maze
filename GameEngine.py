@@ -86,7 +86,7 @@ def gameLoop(self): # The main game loop
     if self.player.currentDirection != None:
         changeSprite(self.player) #Changes sprite regardless of whether move is valid 
     if moveTest(self.player.pos, self.player.currentDirection, self.maze):
-        moveOnce(self.player, self.maze, dirDict)
+        moveOnce(self.player, dirDict)
         moveCount += 1
     blackAround(self.player.pos, self.surface, s)
 
@@ -97,7 +97,7 @@ def gameLoop(self): # The main game loop
             self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
 
         if self.opponent.currentDirection != None:
-            moveOnce(self.opponent, self.maze, dirDict)
+            moveOnce(self.opponent, dirDict)
 
     else:
         self.opponent.currentDirection = None
