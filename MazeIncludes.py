@@ -12,7 +12,7 @@ from random import randint #Used for getting opponent direction
 sqSize = 30
 s = int(sqSize)
 
-#player images
+#cat images
 catUpImg = pygame.image.load('cat_up.png')
 catDownImg = pygame.image.load('cat_down.png')
 catLeftImg = pygame.image.load('cat_left.png')
@@ -31,34 +31,84 @@ collisionText = "Oh no! You were caught by the enemy.\nYou lasted {0} moves."
 winText = "Well done! You have completed the maze.\nYou completed it in {0} moves."
 
 #Directions you can move in
-dirList = ["left","right","up","down"]
-dirDict = {"left":v(-s,0),"right":v(s,0),"up":v(0,-s),"down":v(0,s)}
+dirList = ["left", "right", "up", "down"]
+dirDict = {"left":v(-s,0), "right":v(s,0), "up":v(0,-s), "down":v(0,s)}
 
 ###--------------------------------------------###
 
 ### Non-member functions ###
 
-#dijkstra's algorithm
-def checkVertex( vertex, graph, checkedVertices ):
-    """
-    We'll check a single vertex in this function. 
-    With each vertex, we will store the vertex from which you can get to it minimally: 
-    - e.g. if the path took us from vertex A to vertex B, we would store vertex A in B. 
-    It will return a graph with updated weights. 
-    """
+### --- Dijkstra's algorithm --- ###
+
+def checkVertex( vertexToCheck, graph, checkedVertices, pathfinder, candidates ):
+    
+    tempRef = 0
+    toCheckRef = getRef(vertexToCheck, graph.height)
+    
+    for vertex in candidates: 
+        tempRef = getRef(vertex, graph.height)
+        # See if vertex is adjacent to vertexToCheck
+        if (graph.adjacencyMatrix[tempRef][toCheckRef] == 1):
+            # and if we've found a new minimal path to vertex - second condition allows us to add new vertices
+            if (graph.vertexWeights[vertexToCheck] + 1  <= graph.vertexWeights[vertex]) or (graph.vertexWeights[tempRef] == 0): 
+                # Update graph.vertexWeights 
+                graph.vertexWeights[tempRef] = graph.vertexWeights[toCheckRef] + 1
+                # Update pathfinder 
+                pathfinder[vertex] = vertexToCheck
+                
+    checkedVertices.append(vertexToCheck)
+    # need all 3 to be updated
+    return checkedVertices, pathfinder, graph
+            
 
 def getNextMove( posFrom, posTo, graph ):
-    """
-    We use Dijkstra's algorithm to get the shortest path.
+   
+    checkedVertices = [] 
+    pathfinder = { posFrom:None } # Will store pairs of vertices, [vertex, vertex from which the shortest path goes to vertex]
+    # e.g. if a -> b in the shortest path, then pathfinder will include b:a
     
-    Each vertex of graph is given a weight (each edge weight is 1).
-    The weights start at 0 by default.
-    We start at the start vertex and give vertices adjacent to it weight +1. 
-    Then, we repeat for the not-checked adjacent vertex of least weight.
+    # Initial condition: check the start vertex 
+    if checkedVertices == []:
+        checkedVertices, pathfinder, graph = checkVertex(posFrom, graph, [])
     
-    We'll implement this recursively, using checkVertex.
-    We will return the vertex to move to next, on the shortest path. 
-    """
+    # Now, pathfinder is updated with vertices adjacent to start
+    # and checkedVertices contains start
+    # and graph's weights have been updated 
+    while checkedVertices[-1] != posTo: 
+        # Get candidates for next check, and choose the minimal one 
+        candidates = [] # Stores candidateVertices
+        x = 0
+        y = 0
+        vertex = v(x, y)
+        for vertexRef in range(1, graph.size + 1): 
+            [x, y] = convertRefToCoords(graph, vertexRef, s)
+            vertex.x = x
+            vertex.y = y
+            # Check if unchecked and connected to a checked vertex 
+            if ( vertex not in checkedVertices ) and ( graph.vertexWeights[vertexRef] > 0 ):
+                vertex.weight = graph.vertexWeights[vertexRef]
+                candidates.append( vertex )
+                
+        # Choosing minimal candidate 
+        # Use an insertion sort 
+        for i in range( len(candidates) ): 
+            for j in range(i): 
+                indexToCheck = i - j - 1
+                if candidates[i].weight < candidates[indexToCheck].weight: 
+                    candidates[i], candidates[indexToCheck] = candidates[indexToCheck], candidates[i]
+        
+        # We're passing candidates so that we don't check unnecessary vertices
+        checkedVertices, pathfinder, graph = checkVertex( candidates[0][0], graph, checkedVertices, pathfinder, candidates ) 
+        
+    # Last element in checkedVertices is now posTo
+    returnElement = pathfinder[posFrom]
+    while pathfinder[returnElement] != posTo: 
+        returnElement = pathfinder[returnElement]
+        
+    # Now, we've got the element after posTo in the shortest path to posFrom
+    return returnElement
+
+### --- end of Dijkstra's algorithm --- ###
 
 #register key input
 def getDirection():
@@ -78,36 +128,11 @@ def getDirection():
             else:
                 return None
 
-#move opponent towards player
-# This is where we'll implement Dijkstra's algorithm
-def getOpponentDirection(posChar, posOpponent, moveVal):
-    if moveVal != 0:
-        return None
-    else:
-        likelyDirections = []
-        if posChar[0] < posOpponent[0]:
-            likelyDirections.append("left")
-        elif posChar[0] > posOpponent[0]:
-            likelyDirections.append("right")
-
-        if posChar[1] < posOpponent[1]:
-            likelyDirections.append("up")
-        elif posChar[1] > posOpponent[1]:
-            likelyDirections.append("down")
-
-        weightList = [1, 1, 1, 1] #chances for [left, right, up, down]
-        for i in range(4):
-            if dirList[i] in likelyDirections:
-                weightList[i] *= 3
-
-        possibleDirections = []
-        for i in range(4):
-            for k in range(weightList[i]):
-                possibleDirections.append(dirList[i])
-
-        return possibleDirections[randint(0, len(possibleDirections) - 1)]
+# Move opponent towards player
+def getOpponentMove(posChar, posOpponent, graph, moveVal):
+    # Need moveVal = 0 for move to take place
+    return (moveVal == 0) ? getNextMove(posOpponent, posChar, graph) : None
     
-
 #see if you can move to a given place, from a given place, on a given graph
 def moveTest(vertex, direction, graph):
     try:
