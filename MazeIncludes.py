@@ -64,12 +64,23 @@ def checkVertex( vertexToCheck, graph, checkedVertices, pathfinder, candidates )
 def getNextMove( posFrom, posTo, graph ):
    
     checkedVertices = [] 
+    candidates = []
     pathfinder = { posFrom:None } # Will store pairs of vertices, [vertex, vertex from which the shortest path goes to vertex]
     # e.g. if a -> b in the shortest path, then pathfinder will include b:a
     
     # Initial condition: check the start vertex 
     if checkedVertices == []:
-        checkedVertices, pathfinder, graph = checkVertex(posFrom, graph, [])
+        # Add adjacent vertices to candidates 
+        tempVertex = posFrom
+        for i in [-1, 1]: 
+            tempVertex.x = posFrom.x + i*s
+            tempVertex.y = posFrom.y
+            candidates.append(tempVertex)
+            tempVertex.x = posFrom.x
+            tempVertex.y = posFrom.y + i*s
+            candidates.append(tempVertex)
+            
+        checkedVertices, pathfinder, graph = checkVertex(posFrom, graph, [], pathfinder )
     
     # Now, pathfinder is updated with vertices adjacent to start
     # and checkedVertices contains start
@@ -82,8 +93,7 @@ def getNextMove( posFrom, posTo, graph ):
         vertex = v(x, y)
         for vertexRef in range(1, graph.size + 1): 
             [x, y] = convertRefToCoords(graph, vertexRef, s)
-            vertex.x = x
-            vertex.y = y
+            vertex = v(x, y)
             # Check if unchecked and connected to a checked vertex 
             if ( vertex not in checkedVertices ) and ( graph.vertexWeights[vertexRef] > 0 ):
                 vertex.weight = graph.vertexWeights[vertexRef]
@@ -96,6 +106,8 @@ def getNextMove( posFrom, posTo, graph ):
                 indexToCheck = i - j - 1
                 if candidates[i].weight < candidates[indexToCheck].weight: 
                     candidates[i], candidates[indexToCheck] = candidates[indexToCheck], candidates[i]
+                else: 
+                    break
         
         # We're passing candidates so that we don't check unnecessary vertices
         checkedVertices, pathfinder, graph = checkVertex( candidates[0][0], graph, checkedVertices, pathfinder, candidates ) 
@@ -129,9 +141,20 @@ def getDirection():
                 return None
 
 # Move opponent towards player
-def getOpponentMove(posChar, posOpponent, graph, moveVal):
+def getOpponentDirection(posChar, posOpponent, graph, moveVal):
     # Need moveVal = 0 for move to take place
-    return (moveVal == 0) ? getNextMove(posOpponent, posChar, graph) : None
+    if moveVal != 0: 
+        return None 
+    else: 
+        nextMovePos = getNextMove(posOpponent, posChar, graph)
+        if nextMovePos[0] > posOpponent[0]: 
+            return "right"
+        else if nextMovePos[0] < posOpponent[0]: 
+            return "left"
+        else if nextMovePos[1] > posOpponent[1]: 
+            return "up"
+        else: 
+            return "down"
     
 #see if you can move to a given place, from a given place, on a given graph
 def moveTest(vertex, direction, graph):
