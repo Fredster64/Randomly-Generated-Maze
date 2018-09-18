@@ -148,6 +148,10 @@ class undirectedGraph:
             for j in range( self.size ): 
                 adjacencyMatrix[i][j] = 0 # adjacencyMatrix is a size*size matrix of zeroes 
                 
+        self.vertexWeights = [] # ith entry is weight of vertex with grid reference i
+        for i in range(self.size): 
+            self.vertexWeights[i] = 0
+                
         return
                 
 # add an edge to the graph
