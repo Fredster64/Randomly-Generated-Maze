@@ -193,14 +193,6 @@ def convertRefToCoords(self, vertexRef, s):
     
     return [x, y]
 
-# completes the graph
-def complete(self): 
-    for i in range(self.size): 
-        for j in range(self.size): 
-            self.adjacencyMatrix[i][j] = 1
-            
-    return
-
 # returns the complement of a graph
 def getComplement(self): 
     complement = undirectedGraph(self.breadth, self.height)
