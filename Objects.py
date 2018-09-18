@@ -82,7 +82,7 @@ class char:
         self.currentSprite = spriteDict["down"]
         self.currentDirection = None
 
-def changePos(self,posNew):
+def changePos(self, posNew):
     self.pos = posNew
     return self.pos
 
@@ -91,8 +91,8 @@ def changeSprite(self):
     return
 
 #Returns new location, and sets new sprite
-def moveOnce(self, maze, dirDict):
-    changePos(self,self.pos+dirDict[self.currentDirection])
+def moveOnce(self, dirDict):
+    changePos(self, self.pos+dirDict[self.currentDirection])
     return
 
 def drawChar(self, gameDisplay, s): 
