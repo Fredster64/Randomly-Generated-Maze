@@ -79,6 +79,7 @@ def getDirection():
                 return None
 
 #move opponent towards player
+# This is where we'll implement Dijkstra's algorithm
 def getOpponentDirection(posChar, posOpponent, moveVal):
     if moveVal != 0:
         return None
@@ -108,16 +109,17 @@ def getOpponentDirection(posChar, posOpponent, moveVal):
     
 
 #see if you can move to a given place, from a given place, on a given graph
-def moveTest(vertex,direction,graph):
+def moveTest(vertex, direction, graph):
     try:
         endVertex = vertex + dirDict[direction]
-    except:
+    except: # direction = None
         return False
-    for edg in graph:
-        if edge(vertex,endVertex) == edg or edge(endVertex,vertex) == edg:
-            return True
-        
-    return False
+    
+    vertexRef = (vertex.j - 1)*graph.height + vertex.i
+    endVertexRef = (endVertex.j - 1)*graph.height + endVertex.i
+    
+    return (graph.adjacencyMatrix[vertexRef][endVertexRef] == 1) ? True : False
+    
 
 #getting the sprites for the player's character
 def getSprites(count):
