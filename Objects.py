@@ -72,6 +72,10 @@ def blackAround(self, surface, s):
 def setWeight(self, value):
     self.weight = value
 
+# Gets the grid reference of a vertex
+def getRef(self, graphHeight): 
+    return (vertex1.j - 1)*self.height + vertex1.i
+
 #------------------------------------------------------------#
         
 #create a character object
@@ -169,8 +173,8 @@ def addEdge(self, edge):
     vertex2 = edge.v2
     
     # Get vertex references from vertex{k}.i and vertex{k}.j
-    vertex1Ref = (vertex1.j - 1)*self.height + vertex1.i
-    vertex2Ref = (vertex2.j - 1)*self.height + vertex2.i
+    vertex1Ref = getRef(vertex1, self.height)
+    vertex2Ref = getRef(vertex2, self.height)
     
     # Appropriately change self.adjacencyMatrix
     self.adjacencyMatrix[vertex1Ref][vertex2Ref] = 1
