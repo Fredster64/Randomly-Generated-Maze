@@ -138,7 +138,6 @@ def vertexEq(self,other):
 class undirectedGraph: 
     
     def __init__(self, breath, height): 
-        self.edges = []
         # We input breadth and height of the square grid 
         self.breadth = breadth
         self.height = height
