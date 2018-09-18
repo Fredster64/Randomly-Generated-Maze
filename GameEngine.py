@@ -92,13 +92,13 @@ def gameLoop(self): # The main game loop
 
     #moving opponent
     if moveCount != 0:
-        self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
-        while (not moveTest(self.opponent.pos, self.opponent.currentDirection, self.maze) ) and ( self.opponent.currentDirection != None):
-            self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
-
+        self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, self.maze, opponentMoveCount % 450)
+        # Don't worry about invalidity of move
+        # because getOpponentDirection always returns a valid move
         if self.opponent.currentDirection != None:
             moveOnce(self.opponent, dirDict)
 
+    # Opponent can't move before player starts 
     else:
         self.opponent.currentDirection = None
 
