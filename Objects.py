@@ -208,4 +208,29 @@ def getComplement(self):
     return complement
             
 ###-----------------------------------------------------------------###
- 
+
+# Stores pairs of vertices: [vertex, vertex from which the shortest path goes to vertex]
+# Used in Dijkstra's algorithm
+class pathfinder:
+    
+    def __init__(self, startVertex):
+        # Will store an array of pairs as described above
+        self.path = [ [startVertex, None] ]
+
+# Returns the vertex before 'vertex' in the path, if any
+def search(self, vertex):
+    for i in range( len(self.path) ):
+        if vertex == self.path[i][0]:
+            return self.path[i][1]
+    # Vertex not found 
+    return None
+
+def insert(self, vertex, vertexBefore):
+    # Need to check if vertex is already in path
+    currentVertexBefore = search(self, vertex)
+    if currentVertexBefore != None:
+        tempIndex = self.path.index( [vertex, currentVertexBefore] )
+        self.path[tempIndex][1] = vertexBefore
+    else:
+        self.path.append([vertex, vertexBefore])
+    return
