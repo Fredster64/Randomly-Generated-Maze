@@ -32,7 +32,7 @@ winText = "Well done! You have completed the maze.\nYou completed it in {0} move
 
 #Directions you can move in
 dirList = ["left", "right", "up", "down"]
-dirDict = {"left":v(-s,0), "right":v(s,0), "up":v(0,-s), "down":v(0,s)}
+dirDict = {"left":v(-s,0,s), "right":v(s,0,s), "up":v(0,-s,s), "down":v(0,s,s)}
 
 ###--------------------------------------------###
 
@@ -90,10 +90,10 @@ def getNextMove( posFrom, posTo, graph ):
         candidates = [] # Stores candidateVertices
         x = 0
         y = 0
-        vertex = v(x, y)
+        vertex = v(x, y, s)
         for vertexRef in range(1, graph.size + 1): 
             [x, y] = convertRefToCoords(graph, vertexRef, s)
-            vertex = v(x, y)
+            vertex = v(x, y, s)
             # Check if unchecked and connected to a checked vertex 
             if ( vertex not in checkedVertices ) and ( graph.vertexWeights[vertexRef] > 0 ):
                 vertex.weight = graph.vertexWeights[vertexRef]
@@ -149,9 +149,9 @@ def getOpponentDirection(posChar, posOpponent, graph, moveVal):
         nextMovePos = getNextMove(posOpponent, posChar, graph)
         if nextMovePos[0] > posOpponent[0]: 
             return "right"
-        else if nextMovePos[0] < posOpponent[0]: 
+        elif nextMovePos[0] < posOpponent[0]: 
             return "left"
-        else if nextMovePos[1] > posOpponent[1]: 
+        elif nextMovePos[1] > posOpponent[1]: 
             return "up"
         else: 
             return "down"
@@ -166,7 +166,7 @@ def moveTest(vertex, direction, graph):
     vertexRef = (vertex.j - 1)*graph.height + vertex.i
     endVertexRef = (endVertex.j - 1)*graph.height + endVertex.i
     
-    return (graph.adjacencyMatrix[vertexRef][endVertexRef] == 1) ? True : False
+    return graph.adjacencyMatrix[vertexRef][endVertexRef] == 1
     
 
 #getting the sprites for the player's character
