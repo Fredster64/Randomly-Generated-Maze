@@ -131,7 +131,7 @@ class edge:
         return "("+str(self[0])+","+str(self[1])+")"
 
 def centre(self):
-    return v(0.5*(self.v1[0]+self.v2[0]),0.5*(self.v1[1]+self.v2[1]))
+    return v(0.5*(self.v1[0]+self.v2[0]), 0.5*(self.v1[1]+self.v2[1]), s)
    
 def vertexEq(self,other):
     if all(self[i] == other[i] for i in range(2)):
@@ -187,7 +187,7 @@ def convertRefToCoords(self, vertexRef, s):
     # Note: i and j start counting at 1, NOT 0
     i = vertexRef % self.height  #row number
     if i == 0: 
-        i = n
+        i = self.height
         
     j = ( (vertexRef - i) / self.breadth ) + 1  #column number
     
