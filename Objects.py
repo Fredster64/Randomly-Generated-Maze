@@ -141,21 +141,16 @@ def vertexEq(self,other):
 # Undirection makes it easier to keep track of edges 
 class undirectedGraph: 
     
-    def __init__(self, breath, height): 
+    def __init__(self, breadth, height): 
         # We input breadth and height of the square grid 
         self.breadth = breadth
         self.height = height
         self.size = self.breadth*self.height
-        # Note: for an n*m grid, we need (n+1)(m+1) vertices
-        self.adjacencyMatrix = [][]
-        for i in range( self.size ):
-            for j in range( self.size ): 
-                adjacencyMatrix[i][j] = 0 # adjacencyMatrix is a size*size matrix of zeroes 
+        # Note: for an n*m grid, we need nm vertices
+        self.adjacencyMatrix = [ [0 for i in range(self.size)] for j in range(self.size) ] 
                 
-        self.vertexWeights = [] # ith entry is weight of vertex with grid reference i
-        for i in range(self.size): 
-            self.vertexWeights[i] = 0
-                
+        self.vertexWeights = [0 for i in range(self.size)] # ith entry is weight of vertex with grid reference i
+
         return
                 
 # add an edge to the graph
