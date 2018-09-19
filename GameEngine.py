@@ -88,7 +88,7 @@ def gameLoop(self): # The main game loop
     if moveTest(self.player.pos, self.player.currentDirection, self.maze):
         moveOnce(self.player, dirDict)
         moveCount += 1
-    blackAround(self.player.pos, self.surface, s)
+    blackAround(self.player.pos, self.surface)
 
     #moving opponent
     if moveCount != 0:
@@ -102,7 +102,7 @@ def gameLoop(self): # The main game loop
     else:
         self.opponent.currentDirection = None
 
-    blackAround(self.opponent.pos, self.surface, s)
+    blackAround(self.opponent.pos, self.surface)
     opponentMoveCount += 1
 
     #drawing the green target square
