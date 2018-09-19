@@ -39,8 +39,8 @@ class GameEngine:
     self.maze = cm.makeTree(self.l, self.w, s)
     
     #Drawing maze 
-    posChar = v(s/2,s/2) # top-left of screen
-    posOpponent = v(s*self.l - s/2, s/2) # top-right of screen
+    posChar = v(s/2, s/2, s) # top-left of screen
+    posOpponent = v(s*self.l - s/2, s/2, s) # top-right of screen
     dm.drawMaze(self.maze, s, self.gameDisplay, self.surface)
     print("Loaded.\nYour aim is to reach the green square without getting caught by the enemy.\nGood Luck!")
     self.player = char(playerSpriteDict, posChar)
@@ -66,7 +66,7 @@ def endCheck(self, moveCount):
         return True
 
     #getting to the green square
-    if self.player.pos == v(s*(self.l-1)+(s/2), s*(self.w-1)+(s/2)):
+    if self.player.pos == v(s*(self.l) - (s/2), s*(self.w) - (s/2), s):
         endGame(winText, moveCount)
         return True
 
