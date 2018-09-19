@@ -9,6 +9,7 @@ class v:
     def __init__(self,x,y,s):
         self.x = x
         self.y = y
+        self.s = s # Makes vertex arithmetic easier
         self.weight = 0 #used in Dijkstra's algorithm
         # Store the vertex reference coordinates
         # i.e. vertex points to maze square in ith row and jth column
@@ -25,10 +26,10 @@ class v:
             raise IndexError
         
     def __add__(self, other):
-        return v(self[0]+other[0],self[1]+other[1])
+        return v(self[0]+other[0],self[1]+other[1],self.s)
 
     def __sub__(self, other):
-        return v(self[0]-other[0],self[1]-other[1])
+        return v(self[0]-other[0],self[1]-other[1],self.s)
     
     def __eq__(self, other):
         if all(self[i] == other[i] for i in range(2)): 
@@ -52,12 +53,13 @@ class v:
         return "("+str(self.x)+","+str(self.y)+")"
 
 #gives rectangles around a given rectangle
-def rectAroundList(self, s):
+def rectAroundList(self):
+    s = self.s
     tlVertex = self+v(5-(s/2),5-(s/2))
-    rectList = [((int(tlVertex[0]),int(tlVertex[1])),(int(s-8),int(s-8)))]
+    rectList = [( (int(tlVertex[0]), int(tlVertex[1])), (int(s-8), int(s-8)) )]
     for i in {-1,1}:
-        tlVertexNew1 = tlVertex+v(s*i,0)
-        tlVertexNew2 = tlVertex+v(0,s*i)
+        tlVertexNew1 = tlVertex+v(s*i,0,s)
+        tlVertexNew2 = tlVertex+v(0,s*i,s)
 
         rectList.append(((int(tlVertexNew1[0]),int(tlVertexNew1[1])),(int(s-8),int(s-8))))
         rectList.append(((int(tlVertexNew2[0]),int(tlVertexNew2[1])),(int(s-8),int(s-8))))
@@ -65,8 +67,8 @@ def rectAroundList(self, s):
     return rectList
 
 #draws black around the position
-def blackAround(self, surface, s):
-    for rect in rectAroundList(self, s):
+def blackAround(self, surface):
+    for rect in rectAroundList(self):
         pygame.draw.rect(surface,(0,0,0,1),rect)
         
 def setWeight(self, value):
@@ -74,7 +76,8 @@ def setWeight(self, value):
 
 # Gets the grid reference of a vertex
 def getRef(self, graphHeight): 
-    return (vertex1.j - 1)*self.height + vertex1.i
+    # Need to cast as int, because it's used for indexing adjacency matrices
+    return (int) ( (self.j - 1)*graphHeight + self.i )
 
 #------------------------------------------------------------#
         
