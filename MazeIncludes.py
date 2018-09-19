@@ -163,8 +163,8 @@ def moveTest(vertex, direction, graph):
     except: # direction = None
         return False
     
-    vertexRef = (vertex.j - 1)*graph.height + vertex.i
-    endVertexRef = (endVertex.j - 1)*graph.height + endVertex.i
+    vertexRef = getRef(vertex, graph.height)
+    endVertexRef = getRef(endVertex, graph.height)
     
     return graph.adjacencyMatrix[vertexRef][endVertexRef] == 1
     
