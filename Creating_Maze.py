@@ -27,16 +27,19 @@ def getDimension(dimension):
 def makeTree(l, w, s):
     
     tree = undirectedGraph(l, w) # breadth is l, height is w
-    start = v(s/2,s/2)
+    start = v(s/2,s/2,s)
     verticesOnTree = [start]
     #Use Prim's Algorithm 
     for _ in range( (l*w) - 1 ): # Number of repetitions of algorithm we need
         
         # Getting candidate edges to add
         candidates = []
-        for edg in graph:
-            if bool(edg[0] in verticesOnTree) != bool(edg[1] in verticesOnTree):
-                candidates.append(edg)
+        for v1 in verticesOnTree:
+            # Test if adjacent vertices are in verticesOnTree
+            for v2 in [v1 + v(s,0,s), v1 + v(s,0,s), v1 + v(0,s,s), v1 + v(0,s,s)]:
+                # Test if v2 is on screen
+                if (v2 not in verticesOnTree) and ( min(v2.x, v2.y) > 0 ) and (v2.x < l*s) and (v2.y < w*s):
+                    candidates.append( edge(v1, v2) )
                
         # Adding a random edge if we can
         if candidates != []:
