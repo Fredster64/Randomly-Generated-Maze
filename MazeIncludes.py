@@ -54,7 +54,7 @@ def checkVertex( vertexToCheck, graph, checkedVertices, pathfinder, candidates )
                 # Update graph.vertexWeights 
                 graph.vertexWeights[tempRef] = graph.vertexWeights[toCheckRef] + 1
                 # Update pathfinder 
-                pathfinder[vertex] = vertexToCheck
+                add(pathfinder, vertex, vertexToCheck)
                 
     checkedVertices.append(vertexToCheck)
     # need all 3 to be updated
@@ -65,7 +65,7 @@ def getNextMove( posFrom, posTo, graph ):
    
     checkedVertices = [] 
     candidates = []
-    pathfinder = { posFrom:None } # Will store pairs of vertices, [vertex, vertex from which the shortest path goes to vertex]
+    pathfinder = pathfinder(posFrom) # Will store pairs of vertices, [vertex, vertex from which the shortest path goes to vertex]
     # e.g. if a -> b in the shortest path, then pathfinder will include b:a
     
     # Initial condition: check the start vertex 
@@ -113,11 +113,11 @@ def getNextMove( posFrom, posTo, graph ):
         checkedVertices, pathfinder, graph = checkVertex( candidates[0][0], graph, checkedVertices, pathfinder, candidates ) 
         
     # Last element in checkedVertices is now posTo
-    returnElement = pathfinder[posFrom]
-    while pathfinder[returnElement] != posTo: 
-        returnElement = pathfinder[returnElement]
+    returnElement = search(pathfinder, posTo)
+    while search(pathfinder, returnElement) != posFrom: 
+        returnElement = search(pathfinder, returnElement)
         
-    # Now, we've got the element after posTo in the shortest path to posFrom
+    # Now, we've got the element after poFrom in the shortest path to posTo
     return returnElement
 
 ### --- end of Dijkstra's algorithm --- ###
