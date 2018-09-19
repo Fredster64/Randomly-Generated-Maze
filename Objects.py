@@ -55,11 +55,11 @@ class v:
 #gives rectangles around a given rectangle
 def rectAroundList(self):
     s = self.s
-    tlVertex = self+v(5-(s/2),5-(s/2))
+    tlVertex = self+v(5-(s/2), 5-(s/2), s)
     rectList = [( (int(tlVertex[0]), int(tlVertex[1])), (int(s-8), int(s-8)) )]
     for i in {-1,1}:
-        tlVertexNew1 = tlVertex+v(s*i,0,s)
-        tlVertexNew2 = tlVertex+v(0,s*i,s)
+        tlVertexNew1 = tlVertex+v(s*i, 0, s)
+        tlVertexNew2 = tlVertex+v(0, s*i, s)
 
         rectList.append(((int(tlVertexNew1[0]),int(tlVertexNew1[1])),(int(s-8),int(s-8))))
         rectList.append(((int(tlVertexNew2[0]),int(tlVertexNew2[1])),(int(s-8),int(s-8))))
