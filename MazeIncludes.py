@@ -113,7 +113,7 @@ def getNextMove( posFrom, posTo, graph ):
         checkedVertices, pathtracer, graph = checkVertex( candidates[0][0], graph, checkedVertices, pathtracer, candidates ) 
         
     # Last element in checkedVertices is now posTo
-    returnElement = search(pathtracer, posTo)
+    returnElement = posTo
     while search(pathtracer, returnElement) != posFrom: 
         returnElement = search(pathtracer, returnElement)
         
