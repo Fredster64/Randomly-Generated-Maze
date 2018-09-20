@@ -95,8 +95,8 @@ def getNextMove( posFrom, posTo, graph ):
             [x, y] = convertRefToCoords(graph, vertexRef, s)
             vertex = v(x, y, s)
             # Check if unchecked and connected to a checked vertex 
-            if ( vertex not in checkedVertices ) and ( graph.vertexWeights[vertexRef] > 0 ):
-                vertex.weight = graph.vertexWeights[vertexRef]
+            if ( vertex not in checkedVertices ) and ( graph.vertexWeights[vertexRef-1] > 0 ):
+                vertex.weight = graph.vertexWeights[vertexRef-1]
                 candidates.append( vertex )
                 
         # Choosing minimal candidate 
