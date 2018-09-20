@@ -45,14 +45,15 @@ def checkVertex( vertexToCheck, graph, checkedVertices, pathtracer, candidates )
     tempRef = 0
     toCheckRef = getRef(vertexToCheck, graph.height)
     
+    # ref counting starts at 1, and list indexing starts at 0, so we need the '-1's
     for vertex in candidates: 
         tempRef = getRef(vertex, graph.height)
         # See if vertex is adjacent to vertexToCheck
-        if (graph.adjacencyMatrix[tempRef][toCheckRef] == 1):
+        if (graph.adjacencyMatrix[tempRef-1][toCheckRef-1] == 1):
             # and if we've found a new minimal path to vertex - second condition allows us to add new vertices
-            if (graph.vertexWeights[vertexToCheck] + 1  <= graph.vertexWeights[vertex]) or (graph.vertexWeights[tempRef] == 0): 
+            if (graph.vertexWeights[toCheckRef-1] + 1  <= graph.vertexWeights[tempRef-1]) or (graph.vertexWeights[tempRef-1] == 0): 
                 # Update graph.vertexWeights 
-                graph.vertexWeights[tempRef] = graph.vertexWeights[toCheckRef] + 1
+                graph.vertexWeights[tempRef-1] = graph.vertexWeights[toCheckRef-1] + 1
                 # Update pathfinder 
                 add(pathtracer, vertex, vertexToCheck)
                 
@@ -80,7 +81,7 @@ def getNextMove( posFrom, posTo, graph ):
             tempVertex.y = posFrom.y + i*s
             candidates.append(tempVertex)
             
-        checkedVertices, pathtracer, graph = checkVertex(posFrom, graph, [], pathtracer, [] )
+        checkedVertices, pathtracer, graph = checkVertex(posFrom, graph, [], pathtracer,candidates)
     
     # Now, pathfinder is updated with vertices adjacent to start
     # and checkedVertices contains start
@@ -110,7 +111,7 @@ def getNextMove( posFrom, posTo, graph ):
                     break
         
         # We're passing candidates so that we don't check unnecessary vertices
-        checkedVertices, pathtracer, graph = checkVertex( candidates[0][0], graph, checkedVertices, pathtracer, candidates ) 
+        checkedVertices, pathtracer, graph = checkVertex( candidates[0], graph, checkedVertices, pathtracer, candidates ) 
         
     # Last element in checkedVertices is now posTo
     returnElement = posTo
