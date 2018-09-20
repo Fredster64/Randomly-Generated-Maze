@@ -193,8 +193,8 @@ def convertRefToCoords(self, vertexRef, s):
     
     # Get coordinates on-screen from i and j
     # +s/2 is needed to land us in the middle of a square
-    x = s*i + s/2
-    y = s*j + s/2
+    x = s*i - s/2
+    y = s*j - s/2
     
     return [x, y]
 
