@@ -40,7 +40,7 @@ dirDict = {"left":v(-s,0,s), "right":v(s,0,s), "up":v(0,-s,s), "down":v(0,s,s)}
 
 ### --- Dijkstra's algorithm --- ###
 
-def checkVertex( vertexToCheck, graph, checkedVertices, pathfinder, candidates ):
+def checkVertex( vertexToCheck, graph, checkedVertices, pathtracer, candidates ):
     
     tempRef = 0
     toCheckRef = getRef(vertexToCheck, graph.height)
@@ -54,18 +54,18 @@ def checkVertex( vertexToCheck, graph, checkedVertices, pathfinder, candidates )
                 # Update graph.vertexWeights 
                 graph.vertexWeights[tempRef] = graph.vertexWeights[toCheckRef] + 1
                 # Update pathfinder 
-                add(pathfinder, vertex, vertexToCheck)
+                add(pathtracer, vertex, vertexToCheck)
                 
     checkedVertices.append(vertexToCheck)
     # need all 3 to be updated
-    return checkedVertices, pathfinder, graph
+    return checkedVertices, pathtracer, graph
             
 
 def getNextMove( posFrom, posTo, graph ):
    
     checkedVertices = [] 
     candidates = []
-    pathfinder = pathfinder(posFrom) # Will store pairs of vertices, [vertex, vertex from which the shortest path goes to vertex]
+    pathtracer = pathfinder(posFrom) # Will store pairs of vertices, [vertex, vertex from which the shortest path goes to vertex]
     # e.g. if a -> b in the shortest path, then pathfinder will include b:a
     
     # Initial condition: check the start vertex 
@@ -80,7 +80,7 @@ def getNextMove( posFrom, posTo, graph ):
             tempVertex.y = posFrom.y + i*s
             candidates.append(tempVertex)
             
-        checkedVertices, pathfinder, graph = checkVertex(posFrom, graph, [], pathfinder )
+        checkedVertices, pathtracer, graph = checkVertex(posFrom, graph, [], pathtracer, [] )
     
     # Now, pathfinder is updated with vertices adjacent to start
     # and checkedVertices contains start
@@ -110,12 +110,12 @@ def getNextMove( posFrom, posTo, graph ):
                     break
         
         # We're passing candidates so that we don't check unnecessary vertices
-        checkedVertices, pathfinder, graph = checkVertex( candidates[0][0], graph, checkedVertices, pathfinder, candidates ) 
+        checkedVertices, pathtracer, graph = checkVertex( candidates[0][0], graph, checkedVertices, pathtracer, candidates ) 
         
     # Last element in checkedVertices is now posTo
-    returnElement = search(pathfinder, posTo)
-    while search(pathfinder, returnElement) != posFrom: 
-        returnElement = search(pathfinder, returnElement)
+    returnElement = search(pathtracer, posTo)
+    while search(pathtracer, returnElement) != posFrom: 
+        returnElement = search(pathtracer, returnElement)
         
     # Now, we've got the element after poFrom in the shortest path to posTo
     return returnElement
