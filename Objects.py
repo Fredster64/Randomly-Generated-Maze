@@ -191,12 +191,12 @@ def convertRefToCoords(self, vertexRef, s):
     if i == 0: 
         i = self.height
         
-    j = ( (vertexRef - i) / self.breadth ) + 1  #column number
+    j = ( (vertexRef - i) / self.height ) + 1  #column number
     
     # Get coordinates on-screen from i and j
-    # +s/2 is needed to land us in the middle of a square
-    x = s*i - s/2
-    y = s*j - s/2
+    # -s/2 is needed to land us in the middle of a square
+    x = s*j - s/2
+    y = s*i - s/2
     
     return [x, y]
 
