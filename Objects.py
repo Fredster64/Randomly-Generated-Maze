@@ -175,8 +175,9 @@ def addEdge(self, edge):
     vertex2Ref = getRef(vertex2, self.height)
     
     # Appropriately change self.adjacencyMatrix
-    self.adjacencyMatrix[vertex1Ref][vertex2Ref] = 1
-    self.adjacencyMatrix[vertex2Ref][vertex1Ref] = 1
+    # Vertex refs start at 1, and array indices start at 0, hence the '-1'
+    self.adjacencyMatrix[vertex1Ref-1][vertex2Ref-1] = 1
+    self.adjacencyMatrix[vertex2Ref-1][vertex1Ref-1] = 1
     
     return
 
