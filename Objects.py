@@ -13,8 +13,8 @@ class v:
         self.weight = 0 #used in Dijkstra's algorithm
         # Store the vertex reference coordinates
         # i.e. vertex points to maze square in ith row and jth column
-        self.i = (x - s/2) / s
-        self.j = (y - s/2) / s
+        self.i = (y - s/2) / s
+        self.j = (x - s/2) / s
         
         
     def __getitem__(self,index):
@@ -77,7 +77,7 @@ def setWeight(self, value):
 # Gets the grid reference of a vertex
 def getRef(self, graphHeight): 
     # Need to cast as int, because it's used for indexing adjacency matrices
-    return (int) ( (self.j - 1)*graphHeight + self.i )
+    return (int) ( self.j*graphHeight + self.i + 1 )
 
 #------------------------------------------------------------#
         
