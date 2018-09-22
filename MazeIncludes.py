@@ -77,12 +77,12 @@ def getNextMove( posFrom, posTo, graph ):
            
             tempVertex.x += i*s
             candidates.append(tempVertex)
-            print(tempVertex)
+          
             tempVertex.x -= i*s
             
             tempVertex.y += i*s
             candidates.append(tempVertex)
-            print(tempVertex)
+ 
             tempVertex.y -= i*s
             
         checkedVertices, pathtracer, graph = checkVertex(posFrom, graph, [], pathtracer,candidates)
