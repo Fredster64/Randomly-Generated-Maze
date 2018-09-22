@@ -55,7 +55,7 @@ def checkVertex( vertexToCheck, graph, checkedVertices, pathtracer, candidates )
                 # Update graph.vertexWeights 
                 graph.vertexWeights[tempRef-1] = graph.vertexWeights[toCheckRef-1] + 1
                 # Update pathfinder 
-                add(pathtracer, vertex, vertexToCheck)
+                insert(pathtracer, vertex, vertexToCheck)
                 
     checkedVertices.append(vertexToCheck)
     # need all 3 to be updated
@@ -74,18 +74,20 @@ def getNextMove( posFrom, posTo, graph ):
         # Add adjacent vertices to candidates 
         tempVertex = posFrom
         for i in [-1, 1]: 
-           
-            tempVertex.x += i*s
-            candidates.append(tempVertex)
-          
-            tempVertex.x -= i*s
             
-            tempVertex.y += i*s
-            candidates.append(tempVertex)
- 
-            tempVertex.y -= i*s
+            tempVertex += v(i*s, 0, s)
+            if getRef(tempVertex, graph.height) <= graph.size:
+                candidates.append(tempVertex)
+                
+            tempVertex += v((-i)*s, 0, s)
             
-        checkedVertices, pathtracer, graph = checkVertex(posFrom, graph, [], pathtracer,candidates)
+            tempVertex += v(0, i*s, s)
+            if getRef(tempVertex, graph.height) <= graph.size:
+                candidates.append(tempVertex)
+
+            tempVertex += v(0, (-i)*s, s)
+            
+        checkVertex(posFrom, graph, checkedVertices, pathtracer, candidates)
     
     # Now, pathfinder is updated with vertices adjacent to start
     # and checkedVertices contains start
@@ -115,7 +117,7 @@ def getNextMove( posFrom, posTo, graph ):
                     break
         
         # We're passing candidates so that we don't check unnecessary vertices
-        checkedVertices, pathtracer, graph = checkVertex( candidates[0], graph, checkedVertices, pathtracer, candidates ) 
+        checkVertex( candidates[0], graph, checkedVertices, pathtracer, candidates ) 
         
     # Last element in checkedVertices is now posTo
     returnElement = posTo
