@@ -74,12 +74,16 @@ def getNextMove( posFrom, posTo, graph ):
         # Add adjacent vertices to candidates 
         tempVertex = posFrom
         for i in [-1, 1]: 
-            tempVertex.x = posFrom.x + i*s
-            tempVertex.y = posFrom.y
+           
+            tempVertex.x += i*s
             candidates.append(tempVertex)
-            tempVertex.x = posFrom.x
-            tempVertex.y = posFrom.y + i*s
+            print(tempVertex)
+            tempVertex.x -= i*s
+            
+            tempVertex.y += i*s
             candidates.append(tempVertex)
+            print(tempVertex)
+            tempVertex.y -= i*s
             
         checkedVertices, pathtracer, graph = checkVertex(posFrom, graph, [], pathtracer,candidates)
     
