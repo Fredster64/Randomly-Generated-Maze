@@ -33,10 +33,12 @@ class v:
         return v(self[0]-other[0],self[1]-other[1],self.s)
     
     def __eq__(self, other):
-        if all(self[i] == other[i] for i in range(2)): 
-            return True
-        else:
-            return False
+        try:
+            if all(self[i] == other[i] for i in range(2)): 
+                return True
+        except: # Equating with non-vertex types
+            None
+        return False
 
     def __lt__(self, other):
         if self[0] < other[0] and self[1] < other[1]:
