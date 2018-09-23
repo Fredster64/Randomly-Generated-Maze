@@ -58,9 +58,7 @@ def checkVertex( vertexToCheck, graph, checkedVertices, pathtracer, candidates )
                 insert(pathtracer, vertex, vertexToCheck)
                 
     checkedVertices.append(vertexToCheck)
-    # need all 3 to be updated
-    return checkedVertices, pathtracer, graph
-            
+    
 
 def getNextMove( posFrom, posTo, graph ):
    
