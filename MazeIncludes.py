@@ -40,14 +40,18 @@ dirDict = {"left":v(-s,0,s), "right":v(s,0,s), "up":v(0,-s,s), "down":v(0,s,s)}
 
 ### --- Dijkstra's algorithm --- ###
 
-def checkVertex( vertexToCheck, graph, checkedVertices, pathtracer, candidates ):
+def checkVertex( vertexToCheck, graph, checkedVertices, pathtracer, posTo ):
     
-    tempRef = 0
+    # Check if we're at posTo
+    if vertexToCheck == posTo:
+        checkedVertices.append(vertexToCheck)
+        return
+    
     toCheckRef = getRef(vertexToCheck, graph.height)
     
     # ref counting starts at 1, and list indexing starts at 0, so we need the '-1's
-    for vertex in candidates: 
-        tempRef = getRef(vertex, graph.height)
+    for tempRef in range(1, graph.size + 1): 
+        
         # See if vertex is adjacent to vertexToCheck
         if (graph.adjacencyMatrix[tempRef-1][toCheckRef-1] == 1):
             # and if we've found a new minimal path to vertex - second condition allows us to add new vertices
@@ -55,7 +59,8 @@ def checkVertex( vertexToCheck, graph, checkedVertices, pathtracer, candidates )
                 # Update graph.vertexWeights 
                 graph.vertexWeights[tempRef-1] = graph.vertexWeights[toCheckRef-1] + 1
                 # Update pathfinder 
-                insert(pathtracer, vertex, vertexToCheck)
+                [x, y] = convertRefToCoords(graph, tempRef, s)
+                insert(pathtracer, v(x, y, s), vertexToCheck)
                 
     checkedVertices.append(vertexToCheck)
     
@@ -67,25 +72,12 @@ def getNextMove( posFrom, posTo, graph ):
     pathtracer = pathfinder(posFrom) # Will store pairs of vertices, [vertex, vertex from which the shortest path goes to vertex]
     # e.g. if a -> b in the shortest path, then pathfinder will include b:a
     
+    # Special case: posFrom = posTo
+    if posFrom == posTo: 
+        return None
+    
     # Initial condition: check the start vertex 
-    if checkedVertices == []:
-        # Add adjacent vertices to candidates 
-        tempVertex = posFrom
-        for i in [-1, 1]: 
-            
-            tempVertex += v(i*s, 0, s)
-            if getRef(tempVertex, graph.height) <= graph.size:
-                candidates.append(tempVertex)
-                
-            tempVertex += v((-i)*s, 0, s)
-            
-            tempVertex += v(0, i*s, s)
-            if getRef(tempVertex, graph.height) <= graph.size:
-                candidates.append(tempVertex)
-
-            tempVertex += v(0, (-i)*s, s)
-            
-        checkVertex(posFrom, graph, checkedVertices, pathtracer, candidates)
+    checkVertex(posFrom, graph, checkedVertices, pathtracer, posTo)
     
     # Now, pathfinder is updated with vertices adjacent to start
     # and checkedVertices contains start
@@ -115,8 +107,8 @@ def getNextMove( posFrom, posTo, graph ):
                     break
         
         # We're passing candidates so that we don't check unnecessary vertices
-        checkVertex( candidates[0], graph, checkedVertices, pathtracer, candidates ) 
-        
+        checkVertex( candidates[0], graph, checkedVertices, pathtracer, posTo ) 
+    
     # Last element in checkedVertices is now posTo
     returnElement = posTo
     while search(pathtracer, returnElement) != posFrom: 
@@ -158,8 +150,10 @@ def getOpponentDirection(posChar, posOpponent, graph, moveVal):
             return "left"
         elif nextMovePos[1] > posOpponent[1]: 
             return "up"
-        else: 
+        elif nextMovePos[1] < posOpponent[1]: 
             return "down"
+        else: 
+            return None
     
 #see if you can move to a given place, from a given place, on a given graph
 def moveTest(vertex, direction, graph):
