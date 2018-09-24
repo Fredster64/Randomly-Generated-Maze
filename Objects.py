@@ -73,7 +73,7 @@ def rectAroundList(self):
 def blackAround(self, surface):
     for rect in rectAroundList(self):
         pygame.draw.rect(surface,(0,0,0,1),rect)
-        
+
 def setWeight(self, value):
     self.weight = value
 
