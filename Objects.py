@@ -210,6 +210,18 @@ def getComplement(self):
             complement.adjacencyMatrix[i][j] = 1 - self.adjacencyMatrix[i][j]
             
     return complement
+
+# Test to see if two vertices are adjacent
+def adjacentTest(self, v1, v2):
+    ref1 = getRef(v1, self.height)
+    ref2 = getRef(v2, self.height)
+    # diff of self.height means adjacent horizontally
+    # diff of 1 means adjacent vertically
+    for diff in [self.height, 1]:
+        if ( ref1 - ref2 == diff ) or ( ref2 - ref1 == diff ):
+            return True
+
+    return False
             
 ###-----------------------------------------------------------------###
 
