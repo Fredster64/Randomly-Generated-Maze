@@ -1,5 +1,8 @@
 Randomly-Generated Maze Project in Python 
 
+Update 1: 
+Have implemented Dijkstra's algorithm to improve opponent movement. Still slightly buggy, but a huge improvement on the previous AI. 
+
 The maze uses Prim's Algorithm for maze generation, finding a minimum spanning tree of the square lattice on which the maze is set. It features two playable characters and some AI (currently undergoing improvement) for the opposing player. 
 
 This project has improved my skills with: 
