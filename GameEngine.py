@@ -36,13 +36,12 @@ class GameEngine:
     print("Loading...")
     
     #making maze
-    self.gC = cm.graphComplete(self.l-1, self.w-1, s)
-    self.maze = cm.makeTree(self.gC, self.l-1, self.w-1, s)
+    self.maze = cm.makeTree(self.l, self.w, s)
     
     #Drawing maze 
-    posChar = v(s/2,s/2)
-    posOpponent = v(s*self.l - s/2, s/2)
-    dm.drawMaze(self.l, self.w, self.maze, self.gC, s, self.gameDisplay, self.surface)
+    posChar = v(s/2, s/2, s) # top-left of screen
+    posOpponent = v(s*self.l - s/2, s/2, s) # top-right of screen
+    dm.drawMaze(self.maze, s, self.gameDisplay, self.surface)
     print("Loaded.\nYour aim is to reach the green square without getting caught by the enemy.\nGood Luck!")
     self.player = char(playerSpriteDict, posChar)
     self.opponent = char(opponentSpriteDict, posOpponent)
@@ -67,7 +66,7 @@ def endCheck(self, moveCount):
         return True
 
     #getting to the green square
-    if self.player.pos == v(s*(self.l-1)+(s/2), s*(self.w-1)+(s/2)):
+    if self.player.pos == v(s*(self.l) - (s/2), s*(self.w) - (s/2), s):
         endGame(winText, moveCount)
         return True
 
@@ -87,23 +86,23 @@ def gameLoop(self): # The main game loop
     if self.player.currentDirection != None:
         changeSprite(self.player) #Changes sprite regardless of whether move is valid 
     if moveTest(self.player.pos, self.player.currentDirection, self.maze):
-        moveOnce(self.player, self.maze, dirDict)
+        moveOnce(self.player, dirDict)
         moveCount += 1
-    blackAround(self.player.pos, self.surface, s)
+    blackAround(self.player.pos, self.surface)
 
     #moving opponent
     if moveCount != 0:
-        self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
-        while (not moveTest(self.opponent.pos, self.opponent.currentDirection, self.maze) ) and ( self.opponent.currentDirection != None):
-            self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, opponentMoveCount % 450)
-
+        self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, self.maze, opponentMoveCount % 450)
+        # Don't worry about invalidity of move
+        # because getOpponentDirection always returns a valid move
         if self.opponent.currentDirection != None:
-            moveOnce(self.opponent, self.maze, dirDict)
+            moveOnce(self.opponent, dirDict)
 
+    # Opponent can't move before player starts 
     else:
         self.opponent.currentDirection = None
 
-    blackAround(self.opponent.pos, self.surface, s)
+    blackAround(self.opponent.pos, self.surface)
     opponentMoveCount += 1
 
     #drawing the green target square

@@ -22,36 +22,34 @@ def getDimension(dimension):
             print(" 2-4 for an easy maze;")
             print(" 5-8, or even higher, for a harder maze.")
 
-#drawing graph of all possible paths in maze
-def graphComplete(l,w,s):
-    graphC = []
-    for x in range(l):
-        for y in range(w+1):
-            graphC.append(edge(v(s*x+(s/2),s*y+(s/2)),v(s*(x+1)+(s/2),s*y+(s/2))))
-    for x in range(l+1):
-        for y in range(w):
-            graphC.append(edge(v(s*x+(s/2),s*y+(s/2)),v(s*x+(s/2),s*(y+1)+(s/2))))
-    return graphC
 
-#make a function that returns a  random minimum spanning tree of a graph
-def makeTree(graph,l,w,s):
-    tree = []
-    start = v(s/2,s/2)
+#make a function that returns a  random minimum spanning tree of an l*w lattice
+def makeTree(l, w, s):
+    
+    tree = undirectedGraph(l, w) # breadth is l, height is w
+    start = v(s/2,s/2,s)
     verticesOnTree = [start]
     #Use Prim's Algorithm 
-    for _ in range(((l+1)*(w+1))-1):
+    for _ in range( (l*w) - 1 ): # Number of repetitions of algorithm we need
+        
+        # Getting candidate edges to add
         candidates = []
-        for edg in graph:
-            if bool(edg[0] in verticesOnTree) != bool(edg[1] in verticesOnTree):
-                candidates.append(edg)
+        for v1 in verticesOnTree:
+            # Test if adjacent vertices are in verticesOnTree
+            for v2 in [v1 + v(s,0,s), v1 - v(s,0,s), v1 + v(0,s,s), v1 - v(0,s,s)]:
+                # Test if v2 is on screen
+                if (v2 not in verticesOnTree) and ( min(v2.x, v2.y) > 0 ) and (v2.x < l*s) and (v2.y < w*s):
+                    if edge(v1, v2) not in candidates: # Don't add edges more than once
+                        candidates.append( edge(v1, v2) )
+               
+        # Adding a random edge if we can
         if candidates != []:
-            nextEdge = candidates[randint(0,len(candidates)-1)]
+            nextEdge = candidates[randint(0, len(candidates)-1)]
             for i in range(2):
                 if nextEdge[i] not in verticesOnTree:
                     verticesOnTree.append(nextEdge[i])
-            tree.append(nextEdge)
-        else:
-            None
+                    
+            addEdge(tree, nextEdge)
   
     return tree
  
