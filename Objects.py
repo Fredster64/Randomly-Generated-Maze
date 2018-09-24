@@ -219,6 +219,12 @@ def adjacentTest(self, v1, v2):
     # diff of 1 means adjacent vertically
     for diff in [self.height, 1]:
         if ( ref1 - ref2 == diff ) or ( ref2 - ref1 == diff ):
+            
+            # Special case: adjacent references but one is at bottom of column
+            # and the other is top of the next column
+            if ( diff == 1 ) and ( max(ref1, ref2) % self.height == 1 ) and ( min(ref1, ref2) % self.height == 0 ):
+                return False
+            
             return True
 
     return False
