@@ -34,10 +34,10 @@ def drawMaze(graph, s, gameDisplay, surface):
     for i in range(graph.size): 
         for j in range(i):
             # reference i and reference j are connected just in case adjacencyMatrix[i][j] = 1
-            if complement.adjacencyMatrix[i][j] == 1: 
+            if ( complement.adjacencyMatrix[i][j] == 1 ) and ( i != j ): 
                 # Get vertex coords and add relevant edge 
-                [v1_x, v1_y] = convertRefToCoords(graph, i, s)
-                [v2_x, v2_y] = convertRefToCoords(graph, j, s)
+                [v1_x, v1_y] = convertRefToCoords(graph, i+1, s)
+                [v2_x, v2_y] = convertRefToCoords(graph, j+1, s)
                 v1 = v(v1_x, v2_x, s)
                 v2 = v(v2_x, v2_y, s)
                 edgeToAdd = edge(v1, v2)
