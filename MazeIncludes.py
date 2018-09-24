@@ -165,7 +165,7 @@ def moveTest(vertex, direction, graph):
     vertexRef = getRef(vertex, graph.height)
     endVertexRef = getRef(endVertex, graph.height)
     
-    return graph.adjacencyMatrix[vertexRef][endVertexRef] == 1
+    return graph.adjacencyMatrix[vertexRef-1][endVertexRef-1] == 1
     
 
 #getting the sprites for the player's character
