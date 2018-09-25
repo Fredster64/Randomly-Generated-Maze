@@ -96,6 +96,7 @@ def gameLoop(self): # The main game loop
         # Don't worry about invalidity of move
         # because getOpponentDirection always returns a valid move
         if self.opponent.currentDirection != None:
+            changeSprite(self.opponent)
             moveOnce(self.opponent, dirDict)
 
     # Opponent can't move before player starts 
