@@ -72,6 +72,10 @@ def getNextMove( posFrom, posTo, graph ):
     pathtracer = pathfinder(posFrom) # Will store pairs of vertices, [vertex, vertex from which the shortest path goes to vertex]
     # e.g. if a -> b in the shortest path, then pathfinder will include b:a
     
+    # Reset all graph weights to 0
+    # Previous iterations will have changed them 
+    graph.vertexWeights = [0 for _ in range(graph.size)]
+    
     # Special case: posFrom = posTo
     if posFrom == posTo: 
         return None
