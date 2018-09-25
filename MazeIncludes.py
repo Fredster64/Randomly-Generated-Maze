@@ -148,9 +148,9 @@ def getOpponentDirection(posChar, posOpponent, graph, moveVal):
             return "right"
         elif nextMovePos[0] < posOpponent[0]: 
             return "left"
-        elif nextMovePos[1] > posOpponent[1]: 
-            return "up"
         elif nextMovePos[1] < posOpponent[1]: 
+            return "up"
+        elif nextMovePos[1] > posOpponent[1]: 
             return "down"
         else: 
             return None
