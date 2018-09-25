@@ -37,7 +37,8 @@ class v:
             if all(self[i] == other[i] for i in range(2)): 
                 return True
         except: # Equating with non-vertex types
-            None
+            return False 
+        
         return False
 
     def __lt__(self, other):
