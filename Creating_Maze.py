@@ -48,8 +48,31 @@ def makeTree(l, w, s):
             for i in range(2):
                 if nextEdge[i] not in verticesOnTree:
                     verticesOnTree.append(nextEdge[i])
-                    
+
             addEdge(tree, nextEdge)
+
+    # Adding some extra edges to make the maze more interesting
+    
+    extraEdgesAddedCount = 0
+    
+    # We're adding (l+w)/2 edges
+    while extraEdgesAddedCount < (int) ( (l + w)/2 ):
+        
+        # Get random vertices 
+        randRef1 = randint(1, tree.size)
+        randRef2 = randint(1, tree.size)
+        
+        # Test if edge between them is on tree
+        if tree.adjacencyMatrix[randRef1 - 1][randRef2 - 1] == 0:
+            
+            # Get coords of vertices, and add edge to the tree
+            [x_1, y_1] = convertRefToCoords(tree, randRef1, s)
+            [x_2, y_2] = convertRefToCoords(tree, randRef2, s)
+            newEdge = edge( v(x_1, y_1, s), v(x_2, y_2, s) )
+            addEdge(tree, newEdge)
+            
+            # Increment extraEdgesAddedCount
+            extraEdgesAddedCount += 1
   
     return tree
  
