@@ -186,7 +186,10 @@ def moveTest(vertex, direction, graph):
     vertexRef = getRef(vertex, graph.height)
     endVertexRef = getRef(endVertex, graph.height)
     
-    return graph.adjacencyMatrix[vertexRef-1][endVertexRef-1] == 1
+    try:
+        return graph.adjacencyMatrix[vertexRef-1][endVertexRef-1] == 1
+    except: # Trying to move off the screen (throws index error since refs are too large/small)
+        return False
     
 
 #getting the sprites for the player's character
