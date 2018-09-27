@@ -92,10 +92,9 @@ def gameLoop(self): # The main game loop
 
     #moving opponent
     if moveCount != 0:
-        self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, self.maze, opponentMoveCount % 450)
-        # Don't worry about invalidity of move
-        # because getOpponentDirection always returns a valid move
-        if self.opponent.currentDirection != None:
+        self.opponent.currentDirection = getOpponentDirection(self.player.pos, self.opponent.pos, self.maze, opponentMoveCount )
+        # Check for validity
+        if moveTest(self.opponent.pos, self.opponent.currentDirection, self.maze):
             changeSprite(self.opponent)
             moveOnce(self.opponent, dirDict)
 
@@ -105,6 +104,9 @@ def gameLoop(self): # The main game loop
 
     blackAround(self.opponent.pos, self.surface)
     opponentMoveCount += 1
+    # Loop to 0 if exceeds 500
+    # Means that the opponent will move every 500 loops
+    opponentMoveCount %= 500
 
     #drawing the green target square
     pygame.draw.rect(self.surface, (0,200,0,1), ((s*(self.l-0.75), s*(self.w-0.75)), (s/2,s/2)), 0)
