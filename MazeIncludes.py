@@ -143,21 +143,38 @@ def getDirection():
 
 # Move opponent towards player
 def getOpponentDirection(posChar, posOpponent, graph, moveVal):
+
+    moveBias = 0.7 # How often the best move will be returned
+    moveSelector = randint(0, 9)
+
     # Need moveVal = 0 for move to take place
     if moveVal != 0: 
-        return None 
+        return None
+    
     else: 
-        nextMovePos = getNextMove(posOpponent, posChar, graph)
-        if nextMovePos[0] > posOpponent[0]: 
-            return "right"
-        elif nextMovePos[0] < posOpponent[0]: 
-            return "left"
-        elif nextMovePos[1] < posOpponent[1]: 
-            return "up"
-        elif nextMovePos[1] > posOpponent[1]: 
-            return "down"
-        else: 
+        nextMovePos = getNextMove(pos_Opponent, pos_Char, graph)
+        if nextMovePos[0] > pos_Opponent[0]: 
+            bestMove = "right"
+        elif nextMovePos[0] < pos_Opponent[0]: 
+            bestMove = "left"
+        elif nextMovePos[1] < pos_Opponent[1]: 
+            bestMove = "up"
+        elif nextMovePos[1] > pos_Opponent[1]: 
+            bestMove = "down"
+        else:
             return None
+
+        if moveSelector / 10 < moveBias: # Happens moveBias times out of 1
+            return bestMove
+        
+        else: # Get another move 
+            moveList = dirList
+            try:
+                moveList.remove(bestMove)
+            except:
+                None
+            # Choose random move from other possibilities 
+            return moveList[randint(0, 2)]
     
 #see if you can move to a given place, from a given place, on a given graph
 def moveTest(vertex, direction, graph):
