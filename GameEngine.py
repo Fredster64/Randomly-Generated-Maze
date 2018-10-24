@@ -106,7 +106,7 @@ def gameLoop(self): # The main game loop
     opponentMoveCount += 1
     # Loop to 0 if exceeds 500
     # Means that the opponent will move every 500 loops
-    opponentMoveCount %= 500
+    opponentMoveCount %= 1000
 
     #drawing the green target square
     pygame.draw.rect(self.surface, (0,200,0,1), ((s*(self.l-0.75), s*(self.w-0.75)), (s/2,s/2)), 0)

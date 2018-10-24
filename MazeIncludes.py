@@ -142,7 +142,7 @@ def getDirection():
                 return None
 
 # Move opponent towards player
-def getOpponentDirection(posChar, posOpponent, graph, moveVal):
+def getOpponentDirection(pos_Char, pos_Opponent, graph, moveVal):
 
     moveBias = 0.7 # How often the best move will be returned
     moveSelector = randint(0, 9)
