@@ -135,7 +135,7 @@ class edge:
         return "("+str(self[0])+","+str(self[1])+")"
 
 def centre(self):
-    return v(0.5*(self.v1[0]+self.v2[0]), 0.5*(self.v1[1]+self.v2[1]), s)
+    return v(0.5*(self.v1[0]+self.v2[0]), 0.5*(self.v1[1]+self.v2[1]), self.v1.s)
    
 def vertexEq(self,other):
     if all(self[i] == other[i] for i in range(2)):
