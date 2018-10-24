@@ -7,6 +7,8 @@ This project is essentially a cat-and-mouse style game, in which the player has 
 
 The maze uses Prim's Algorithm for maze generation, finding a minimum spanning tree of the square lattice on which the maze is set. It features two playable characters and some AI for the opposing player. 
 
+Note that, to play this game, you'll need to install PyGame. See the PyGame website for instructions on how to do this.
+
 This project has improved my skills with: 
 
 - Using pygame to draw basic 2D graphics and imported sprites; 
